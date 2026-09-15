@@ -1,0 +1,42 @@
+name: Feature request
+description: Propose a change in behaviour or a new capability.
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        These projects record their hard calls as architecture decision records.
+        If your proposal contradicts one, say which — that is a better
+        conversation than a rejected pull request, and it is the fastest way to
+        get the decision revisited rather than re-argued.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you hitting?
+      description: The situation, not the solution. What are you trying to do, and what stops you?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would you like to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What did you consider instead?
+      description: Including doing nothing. Why is that not enough?
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: conduct
+    attributes:
+      label: Code of Conduct
+      options:
+        - label: I agree to follow this organisation's [Code of Conduct](https://github.com/the-vibey-project/.github/blob/main/CODE_OF_CONDUCT.md).
+          required: true

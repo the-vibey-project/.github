@@ -1,0 +1,41 @@
+# vibey-gh adoption for the organisation's `.github` repository.
+#
+# Deliberately conservative, following the same first-adoption shape the rest of the
+# family used: the commit trailer (via the installed hooks) makes provenance total from
+# day one, and the pieces needing per-repository curation stay off until they are worth
+# turning on.
+#
+# This repository holds no code and ships no package. What it holds is GitHub's
+# organisation-wide defaults -- the profile README, and the community health files every
+# other repository inherits when it does not define its own. So there is no version to
+# derive, no wheel to publish, and no test suite to gate.
+
+[fingerprint]
+# Only the rendered workflows: they arrive from vibey-gh already carrying the header, so
+# including them costs nothing and keeps `check` meaningful. Markdown is deliberately
+# absent -- these files are read by people on github.com, and a provenance comment at the
+# top of CONTRIBUTING.md is noise in the one place it would actually be seen. Every COMMIT
+# still carries the Made-With trailer, which is the half of the rule that covers them.
+sources = [".github/workflows/*.yml"]
+
+[branches]
+integration = "develop"
+release     = "main"
+
+[merge_train]
+owner           = "the-vibey-project"
+trusted_authors = ["adammatthewsteinberger", "claude[bot]", "github-actions[bot]", "vibey[bot]"]
+
+[install]
+# provenance.yml and conventional-commits.yml only: both are self-contained and need no
+# secrets. The AI lanes (pr-automation, issue-automation, the merge train) want
+# ANTHROPIC_API_KEY and AUTOMERGE_TOKEN on this repository before they are worth
+# rendering, and a docs-only repository has little for them to do.
+workflows   = ["provenance.yml", "conventional-commits.yml"]
+pin_version = true
+
+[documentation]
+# The documentation contract checks for a project map, agent docs and README sections that
+# describe a codebase. This repository is not one.
+enabled         = false
+require_roadmap = false

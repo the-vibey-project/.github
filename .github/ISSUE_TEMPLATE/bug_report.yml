@@ -1,0 +1,64 @@
+name: Bug report
+description: Something isn't working the way it should.
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The fields below are required because a report without them is usually
+        unreproducible, and an unreproducible report is a conversation rather
+        than a fix.
+
+        These are **macOS and Linux** projects. Usage questions belong in
+        [Discussions](https://github.com/the-vibey-project/vibey/discussions).
+        Please search existing issues first.
+
+  - type: input
+    id: package
+    attributes:
+      label: Package and version
+      description: The distribution and the exact version — `pip show <name>` or `<command> --version`.
+      placeholder: "vibey-gh 1.73.0"
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: OS and Python
+      placeholder: "macOS 15.6 / Python 3.12.13"
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead?
+      description: Paste the actual output, including the full error. Redact tokens and secrets.
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Smallest reproduction
+      description: The exact commands, from a clean state. If you cannot reduce it, say what you tried.
+      render: shell
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: conduct
+    attributes:
+      label: Code of Conduct
+      options:
+        - label: I agree to follow this organisation's [Code of Conduct](https://github.com/the-vibey-project/.github/blob/main/CODE_OF_CONDUCT.md).
+          required: true

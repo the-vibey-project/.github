@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://the-vibey-project.github.io/vibey/
+    about: Install, quickstart, guides, architecture and decision records.
+  - name: Question or discussion
+    url: https://github.com/the-vibey-project/vibey/discussions
+    about: General questions and design discussion, rather than a specific bug or feature request.
+  - name: Security vulnerability
+    url: https://github.com/the-vibey-project/.github/blob/main/SECURITY.md
+    about: Report privately. Never open a public issue for a vulnerability.
