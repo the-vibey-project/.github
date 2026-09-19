@@ -29,16 +29,16 @@ Verify against the repository, not against memory.
   top of `CONTRIBUTING.md` is noise in the one place it would actually be read,
   and the trailer is the half of the rule that covers such files.
 - **Work lands on `develop`** and is promoted to `main`. Never commit to `main`.
-- **`.github/workflows/*` are generated.** They are rendered by `vibey-gh install`
-  from templates in the `vibey-gh` package, which now lives in
+- **`.github/workflows/*` are generated.** They are rendered by the `vibey-gh`
+  command shipped inside the single `vibey` distribution, from templates in
   [`vibey`](https://github.com/the-vibey-project/vibey) under
   `src/vibey_tools/gh`. Editing a rendered workflow here is reverted by the next
-  install and reported as drift by CI. Change the template.
+  install and reported as drift by CI. Change the template in `vibey`.
 
 ## Before you push
 
 ```bash
-pip install vibey-gh
+pip install vibey
 vibey-gh install     # idempotent; installs hooks and re-renders managed workflows
 vibey-gh check       # exactly what CI will say
 ```

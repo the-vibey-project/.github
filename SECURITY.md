@@ -24,14 +24,15 @@ Please give a reasonable window to ship a fix before disclosing publicly.
 
 ## Supported versions
 
-Only the latest released version of each package receives security fixes. These
-are pre-1.0 projects on a fast release cadence; there are no long-term support
-branches. Pin a version, and upgrade to take a fix.
+Only the latest released version of the `vibey` distribution receives security
+fixes. The runners and tools are shipped inside that distribution rather than
+released as separate packages. There are no long-term support branches: pin a
+version when you need reproducibility, and upgrade to take a fix.
 
 ## What is in scope
 
-- The published packages: `vibey`, `vibey-gh`, `vibey-skills`, `vibey-bootstrap`,
-  and the `*loop` runners.
+- The published `vibey` distribution, including its `vibey-gh`, `vibey-skills`,
+  `vibey-bootstrap`, and `*loop` components.
 - The GitHub Actions workflows these projects render into a repository that
   adopts them — in particular anything reachable from a `pull_request_target`
   trigger, which runs with the base repository's permissions.
