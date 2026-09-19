@@ -1,123 +1,96 @@
 # The Vibey Project
 
-**Autonomous software delivery, built so you can check its work.**
+**Open-source infrastructure for autonomous software delivery that remains inspectable.**
 
-An agent that writes code is easy. An agent you can leave running is a different
-problem: it has to know when it is out of credits, hand off without losing the
-thread, refuse to claim a job it did not finish, and leave a record you can read
-afterwards. That is what lives here.
-
----
+An AI coding session can write code. Delivery is the harder system: the work has to
+survive a crashed agent, an exhausted vendor account, a bad handoff, and the gap between
+what a model claims and what the repository can prove. Vibey is the conductor for that
+system.
 
 ## Start here
 
 ### 🎼 [vibey](https://github.com/the-vibey-project/vibey)
 
-The conductor. You describe what you want; vibey runs it through six phases —
-**design → build → review**, with an optional visual-design step and an opt-in
-deployment stage set — and comes back when it needs you.
+Vibey handles intake and then runs a six-phase delivery machine:
+**design → build → review → deploy design → deploy execute → deploy review**.
+The visual-design interstitial and deployment stage set are opt-in. It runs locally on
+macOS or Linux, uses PostgreSQL for durable state, and has no cloud control plane you
+must trust with the working tree.
 
-Every job is a row in PostgreSQL, leased with `FOR UPDATE SKIP LOCKED`. Workers
-die and the lease expires and another worker picks the job up, because every job
-is idempotent under replay. The conversation is an append-only ledger: no
-updates, no deletes, corrections are new events that supersede old ones.
+One `pip install vibey` delivers the conductor, five engine runners, the GitHub
+automation, the skills marketplace, and the bootstrap tooling. Local engines are
+preferred first when enabled; paid engines remain the fallback when the sovereign lane
+is unavailable.
 
-Three rules it will not bend:
+The system is built around a few rules:
 
-- **It never blocks a worker on a human.** Waiting for you is a parked job and a
-  gate row, never a thread waiting on stdin.
-- **A capacity rejection outranks a completion claim.** An engine that says "done"
-  while it is out of credit is not believed.
-- **A handoff is gated by a predicate, not a vibe.** Passing work between models
-  has to pass a deterministic no-loss check — matching on ids minted by vibey, not
-  on text — before it is accepted. A failed gate is a retry, an escalation, or a
-  human gate. Never a silent partial.
+- **Nothing waits on a human thread.** A human decision is an append-only gate row and a
+  parked job, never a worker blocked on stdin.
+- **Nothing disappears when an agent dies.** Decisions, findings, handoffs, and spend are
+  written to an append-only PostgreSQL ledger before they take effect. Leases use
+  `FOR UPDATE SKIP LOCKED`, and replay is idempotent.
+- **Capacity outranks confidence.** A completion claim from a model that is out of
+  credits or otherwise unavailable is not accepted as success.
+- **Handoffs are deterministic.** A cross-engine handoff must pass a model-free no-loss
+  gate before the receiving runner can continue; otherwise it retries, escalates, or
+  parks for a human.
+- **Reviews are sovereign-first where they can be.** Diff-groundable review work runs
+  through the local lane first; paid high-context reasoning stays available for the
+  architectural questions that require it.
 
-Python 3.12+, PostgreSQL, pre-1.0.
+**Read the design first:**
 
----
+[Research paper (HTML)](https://the-vibey-project.github.io/vibey/main/paper/) ·
+[paper PDF](https://the-vibey-project.github.io/vibey/main/paper.pdf) ·
+[documentation book (HTML)](https://the-vibey-project.github.io/vibey/main/) ·
+[book PDF](https://the-vibey-project.github.io/vibey/main/book.pdf) ·
+[book EPUB](https://the-vibey-project.github.io/vibey/main/book.epub) ·
+[print HTML](https://the-vibey-project.github.io/vibey/main/book-print.html)
 
-## The runners
+The current development release also generates editable DOCX versions of the paper and
+book; those files will join the published documentation surfaces with the next release.
 
-vibey does not reimplement the agents. It drives them, and rotates between them
-by smooth weighted round-robin so one provider running dry does not stop the
-work. Each is a standalone autonomous session runner you can use on its own:
+## What ships in the distribution
 
-| | |
-|---|---|
-| [**claudeloop**](https://github.com/the-vibey-project/claudeloop) | Claude |
-| [**codexloop**](https://github.com/the-vibey-project/codexloop) | OpenAI |
-| [**cursorloop**](https://github.com/the-vibey-project/cursorloop) | Cursor |
-| [**agyloop**](https://github.com/the-vibey-project/agyloop) | Antigravity |
-| [**qwenloop**](https://github.com/the-vibey-project/qwenloop) | Local Qwen — the standby tier, so a run can finish with no paid credits at all |
+The source is one uv-workspace monorepo. These are components of `vibey`, not a set of
+separate packages that must be installed and versioned independently.
 
----
+| Component | Source | Role |
+|---|---|---|
+| Conductor | [`src/vibey`](https://github.com/the-vibey-project/vibey/tree/develop/src/vibey) | Domain, application, infrastructure, CLI and TUI for the six-phase delivery machine |
+| Engine runners | [`src/vibey_runners`](https://github.com/the-vibey-project/vibey/tree/develop/src/vibey_runners) | Claude Code, OpenAI Codex, Cursor Agent, Google Antigravity/Gemini, and local Qwen; each shares a common runner contract |
+| `vibey-gh` | [`src/vibey_tools/gh`](https://github.com/the-vibey-project/vibey/tree/develop/src/vibey_tools/gh) | Provenance, exact-head review, merge train, branch promotion, release surfaces, paper/book exports, and continuous delivery estimates |
+| `vibey-skills` | [`src/vibey_tools/skills`](https://github.com/the-vibey-project/vibey/tree/develop/src/vibey_tools/skills) | A deterministic Claude Code marketplace with 135 plugins and 710 evidence-grounded skills |
+| `vibey-bootstrap` | [`src/vibey_tools/bootstrap`](https://github.com/the-vibey-project/vibey/tree/develop/src/vibey_tools/bootstrap) | Optional Azure, telemetry, configuration, Service Bus, outbox, and dead-letter foundations |
 
-## The libraries
-
-Each is independently useful, independently versioned, and on PyPI.
-
-### 📚 [vibey-skills](https://github.com/the-vibey-project/vibey-skills)
-
-**127 plugins. 644 skills.** A Claude Code plugin marketplace of
-evidence-grounded practitioner references — architecture, security, testing,
-engineering process, and a long tail of domains — plus a deterministic retrieval
-engine that compiles a token-budgeted context packet from them. Lexical, not
-embedding-based: the same request returns the same packet, with a provenance
-comment over every chunk. Zero dependencies, so `uvx vibey-skills` just runs.
-
-### 🔁 [vibey-gh](https://github.com/the-vibey-project/vibey-gh)
-
-The GitHub automation the whole family runs on: provenance fingerprints that make
-every change attributable, versions derived from what actually changed rather than
-chosen, a merge train, branch realignment, and a documentation channel that
-publishes a site, a book and a paper from the same source. **Zero dependencies,
-stdlib only** — deliberately, because it runs in every CI job of every repository
-that adopts it, and a dependency it grows is a dependency they all grow.
-
-### 🥾 [vibey-bootstrap](https://github.com/the-vibey-project/vibey-bootstrap)
-
-The cross-cutting layer, solved once. One call brings a cold process up:
-structured logging that works immediately, configuration and secrets loaded into
-the environment, telemetry attached as soon as there is something to attach it
-to. Everything past that — tiered alerts, health probes, a hardened HTTP client,
-ten log transports, a transactional outbox — is opt-in behind a pip extra.
-
----
+The command-line surface includes `vibey`, `vibey-gh`, `vibey-skills`,
+`vibey-bootstrap`, and the `*loop` runner commands after the single install. The
+individual component directories keep their own contracts and tests while the release
+is one coherent distribution.
 
 ## How it is built
 
-Two rules hold across every repository here, enforced in CI rather than asked
-for in review:
+The repository treats architecture and operations as code:
 
-- **Every commit is attributable**, by a file header *and* a commit trailer — two
-  halves, because a rule that only covers files cannot express itself in JSON or
-  in generated Markdown.
-- **Nothing merges to `main` directly.** Feature work squashes into `develop`;
-  `develop` merge-commits into `main`.
+- Onion layers point inward, with import-linter contracts and a pure domain layer.
+- `domain`, `application`, `infrastructure`, and `cli` each carry a 100% branch-coverage
+  floor; the absorbed workspace tenants keep their own gates.
+- Conventional Commits, provenance trailers, exact-head claims, security scanning,
+  SBOM/signing, and release promotion are enforced in CI.
+- `develop` is the integration line; `main` is promoted from it for the stable release.
+- Documentation is generated from the same source into a website, paper, editable DOCX
+  files, EPUB, print HTML, and browser-produced PDFs.
 
-The code gates are per-repository and deliberately not uniform, because the
-repositories are not alike. vibey and the runners carry **100% branch coverage as
-a per-layer floor**, not an average, plus `import-linter` contracts that make
-"dependencies point inward" a build failure rather than a convention.
-vibey-bootstrap carries a 100% line floor. vibey-skills is mostly a Markdown
-corpus, and its real gate is a manifest validator that checks every skill's
-frontmatter, every plugin's version, and that the published wheel actually
-carries all 644 of them.
+The repository's [README](https://github.com/the-vibey-project/vibey) is the operational
+quickstart. The [architecture decisions](https://github.com/the-vibey-project/vibey/tree/develop/docs/architecture/decisions)
+explain why the hard constraints exist.
 
----
+## Contribute
 
-## Using any of it
+Start with an issue when a change is non-trivial, read the repository's
+[`AGENTS.md`](https://github.com/the-vibey-project/vibey/blob/develop/AGENTS.md), and let
+the gates prove the patch. The project is MIT-licensed and welcomes careful, evidence-
+backed contributions.
 
-```bash
-pip install vibey          # the conductor
-pip install vibey-gh       # the GitHub automation
-pip install vibey-skills   # the skills marketplace and context engine
-pip install vibey-bootstrap
-```
-
-Every repository carries its own README, quickstart, and architecture decision
-records — the ADRs are worth reading first if you want to know *why* something
-works the way it does rather than how.
-
-Built by [Adam Matthew Steinberger](https://vibewithadam.matthewsteinberger.com/).
+Built and maintained by
+[Adam Matthew Steinberger](https://vibewithadam.matthewsteinberger.com/).

@@ -17,9 +17,10 @@ matches what you actually need.
 Two things worth knowing before you file anything:
 
 - **These are macOS and Linux projects.** Windows is not a supported target.
-- **Several repositories are archived.** Their code now lives inside
-  [`vibey`](https://github.com/the-vibey-project/vibey) and is developed there.
-  An archived repository cannot accept issues or pull requests — open those
-  against `vibey`.
+- **The organisation's runners and tools live in `vibey`.** The former
+  standalone layout was absorbed into that monorepo, so issues about those
+  components belong in [`vibey`](https://github.com/the-vibey-project/vibey).
+  Check a repository's banner before opening an issue: an archived repository
+  cannot accept issues or pull requests.
 
 By participating you agree to the [Code of Conduct](CODE_OF_CONDUCT.md).

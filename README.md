@@ -1,9 +1,9 @@
 # `.github` — the organisation's shared defaults
 
-This repository is not a project. It holds the files GitHub reads at the
-**organisation** level, so that every other repository in
-[the-vibey-project](https://github.com/the-vibey-project) inherits them without
-carrying its own copy.
+This repository is not a product repository. It holds the files GitHub reads at
+the **organisation** level, so that the projects in
+[the-vibey-project](https://github.com/the-vibey-project) inherit sensible
+defaults without carrying their own copies.
 
 | Path | What GitHub does with it |
 |---|---|
@@ -19,12 +19,15 @@ carrying its own copy.
 `vibey` ships its own `SECURITY.md` because its threat model is specific to
 running autonomous engines against a working tree, and that copy is what its
 Security tab shows. Put something here only when it is true of *every*
-repository in the organisation.
+repository in the organisation. The organisation currently has one product
+repository, [`vibey`](https://github.com/the-vibey-project/vibey); the runners
+and tools that once lived in sibling repositories now live in that monorepo.
 
 ## Working in this repository
 
 It carries the same provenance rules as the rest of the family, installed by
-[vibey-gh](https://github.com/the-vibey-project/vibey-gh):
+the in-tree `vibey-gh` tool from
+[`vibey`](https://github.com/the-vibey-project/vibey/tree/develop/src/vibey_tools/gh):
 
 - Every commit carries a `Made-With` trailer and a Conventional Commits subject.
   The `commit-msg` hook adds the trailer; `conventional-commits.yml` and
@@ -35,10 +38,12 @@ It carries the same provenance rules as the rest of the family, installed by
 After cloning:
 
 ```bash
-pip install vibey-gh
+pip install vibey          # the distribution that carries vibey-gh
 vibey-gh install     # installs the hooks and re-renders the managed workflows
 vibey-gh check       # verifies both halves of the provenance rule
 ```
 
 `vibey-gh install` is idempotent and is the only supported way to change the
-managed workflows — edit the template in `vibey-gh`, not the rendered file here.
+managed workflows — edit the template in
+[`vibey/src/vibey_tools/gh`](https://github.com/the-vibey-project/vibey/tree/develop/src/vibey_tools/gh),
+not the rendered file here.
