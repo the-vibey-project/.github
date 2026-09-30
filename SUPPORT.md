@@ -1,26 +1,24 @@
 # Getting help
 
-Please do **not** open a bug report for a usage question. Use the channel that
-matches what you actually need.
+Questions are welcome, and there are no silly ones. Pick the channel that matches what
+you need, and you'll get a faster answer.
 
 | I want to… | Go here |
-|---|---|
+| --- | --- |
 | Understand what these projects are | The [organisation profile](https://github.com/the-vibey-project) |
-| Install or configure one of them | That repository's `README.md`, then its `docs/` |
-| Understand *why* something is built the way it is | That repository's `docs/architecture/decisions/` — the ADRs are the reasoning, not the reference |
-| Ask a question or discuss a design | GitHub Discussions on the repository in question |
-| Report a bug | That repository's issue chooser → **Bug report** |
-| Propose a feature | That repository's issue chooser → **Feature request** |
-| Report a security vulnerability | [SECURITY.md](SECURITY.md) — privately, never as a public issue |
+| Install, configure or run vibey | Its [README](https://github.com/the-vibey-project/vibey#readme), then [the documentation](https://the-vibey-project.github.io/vibey/main/) |
+| Understand *why* something is built the way it is | The [decision records](https://github.com/the-vibey-project/vibey/tree/develop/docs/architecture/decisions): they are the reasoning, not the reference |
+| Ask a question, or talk through a design | [Q&A in Discussions](https://github.com/the-vibey-project/vibey/discussions/categories/q-a), or [Discord](https://discord.gg/Qvu8aYnVS) |
+| Report a bug | The repository's issue chooser → **Bug report** |
+| Propose a feature | The repository's issue chooser → **Feature request**, or [Ideas](https://github.com/the-vibey-project/vibey/discussions/categories/ideas) if it is still taking shape |
+| Report a security vulnerability | [SECURITY.md](SECURITY.md): privately, never as a public issue |
 | Contribute a change | [CONTRIBUTING.md](CONTRIBUTING.md) |
 
 Two things worth knowing before you file anything:
 
 - **These are macOS and Linux projects.** Windows is not a supported target.
-- **The organisation's runners and tools live in `vibey`.** The former
-  standalone layout was absorbed into that monorepo, so issues about those
-  components belong in [`vibey`](https://github.com/the-vibey-project/vibey).
-  Check a repository's banner before opening an issue: an archived repository
-  cannot accept issues or pull requests.
+- **The runners and tools live in `vibey`.** They once had repositories of their own
+  and were absorbed into that monorepo, so issues about any of them belong in
+  [`vibey`](https://github.com/the-vibey-project/vibey).
 
 By participating you agree to the [Code of Conduct](CODE_OF_CONDUCT.md).

@@ -20,6 +20,8 @@ Concretely, in issues, pull requests, reviews and discussions:
   tests rather than by argument, and the same standard applies to conversation.
 - **Let people be wrong without being humiliated.** Most bad patches are missing
   context, not judgement.
+- **Make room for newcomers.** A first question or a first pull request deserves a
+  patient answer and a pointer to what they need, not a link and silence.
 
 Not acceptable, anywhere in these repositories: harassment or personal attacks;
 sexualised language or imagery; demeaning comments about anyone's identity,
@@ -34,7 +36,7 @@ project.
 
 ## Enforcement
 
-Report anything that concerns you to **adam@matthewsteinberger.com**. Reports are
+Report anything that concerns you to **[adam@matthewsteinberger.com](mailto:adam@matthewsteinberger.com)**. Reports are
 read by the maintainer and are not shared further without your agreement.
 
 Expect an acknowledgement within 3 working days. Responses are proportionate: a
