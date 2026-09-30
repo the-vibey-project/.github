@@ -43,6 +43,15 @@ into a contributor within an hour. That decision is recorded as vibey ADR-0076
   than repeating them.
 - **The page is about the project.** Vendors appear only as the engines Vibey
   supports, as `vibey` itself describes them, and no private person is named.
+- **One bounded exception: the maintainer.** The last question in *Questions people
+  ask* and the footer may say who maintains Vibey and that the maintainer takes paid,
+  fixed-scope work. Keep it there, below the contributor path, and keep it to links:
+  the offers, their evidence and any prices live in the maintainer's
+  [`resume`](https://github.com/adammatthewsteinberger/resume) repository, not here. It
+  may not name clients, quote testimonials or add figures this page cannot trace, and it
+  must say that paid work buys no place in the project's review queue. The order the
+  page serves is contributors first, people hiring for contract work second, and
+  employers third.
 
 ## The rules that do apply
 

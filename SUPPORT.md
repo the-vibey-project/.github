@@ -13,6 +13,7 @@ you need, and you'll get a faster answer.
 | Propose a feature | The repository's issue chooser → **Feature request**, or [Ideas](https://github.com/the-vibey-project/vibey/discussions/categories/ideas) if it is still taking shape |
 | Report a security vulnerability | [SECURITY.md](SECURITY.md): privately, never as a public issue |
 | Contribute a change | [CONTRIBUTING.md](CONTRIBUTING.md) |
+| Hire the maintainer for paid, fixed-scope work | [SERVICES.md](https://github.com/adammatthewsteinberger/resume/blob/develop/SERVICES.md), kept outside these projects so it never lands in an issue queue |
 
 Two things worth knowing before you file anything:
 
