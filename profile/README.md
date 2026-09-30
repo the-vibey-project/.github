@@ -1,6 +1,6 @@
 # The Vibey Project
 
-**Vibey is a free, open-source (MIT) conductor for AI coding agents: it interviews you
+**Vibey is a free, open-source (MIT) orchestrator for AI coding agents: it interviews you
 until the spec is sharp, builds the software unattended across a pool of engines,
 reviews it with you, and records every decision in an append-only PostgreSQL ledger,
 running on a local model on your own machine by default.**
@@ -39,9 +39,12 @@ work between engines as capacity comes and goes.
 PostgreSQL ledger, never inside one vendor's chat session. When an engine runs out of
 credits, the next one is seeded only after a no-loss gate confirms that no open
 question, decision, assumption or finding was dropped. That gate is deterministic code
-with no model call.
+with no model call. A chaos test abandons worker claims at random mid-job and passes
+only if no job is lost or committed twice.
 <br>Evidence: [ADR-0004](https://github.com/the-vibey-project/vibey/blob/develop/docs/architecture/decisions/0004-no-loss-gate-on-handoff.md)
 · [the gate's tests](https://github.com/the-vibey-project/vibey/blob/develop/tests/domain/test_noloss.py)
+· [the chaos test](https://github.com/the-vibey-project/vibey/blob/develop/tests/infrastructure/db/test_chaos.py)
+· [case study: how vibey survives a crashed agent](https://github.com/the-vibey-project/vibey/blob/develop/docs/case-studies/how-vibey-survives-a-crashed-agent.md)
 · [paper: the no-loss handoff gate](https://the-vibey-project.github.io/vibey/main/paper/#the-no-loss-handoff-gate)
 
 **The record cannot be quietly rewritten.** Database triggers refuse every update,
@@ -206,7 +209,24 @@ Privately, through **Security → Report a vulnerability** on the affected repos
 Never in a public issue. The details are in
 [SECURITY.md](https://github.com/the-vibey-project/vibey/blob/develop/SECURITY.md).
 
+### Who maintains Vibey, and can I hire the maintainer?
+
+Vibey is maintained by Adam Matthew Steinberger, an independent AI platform engineer in
+Greenville, South Carolina, working US-remote. Separately from the project, Adam takes
+fixed-scope contract work in the same territory: AI codebase and security reviews, RAG
+chatbots, LLM cost and policy gateways, Okta and Entra ID governance, and SOC 2 and
+OWASP LLM Top 10 readiness for AI features.
+
+Each engagement starts with a [written intake](https://github.com/adammatthewsteinberger/resume/blob/develop/freelance/intake.md)
+rather than a discovery call, and a fixed scope and acceptance checklist are agreed in
+writing before work begins. The offers, and the work behind each one, are in
+[SERVICES.md](https://github.com/adammatthewsteinberger/resume/blob/develop/SERVICES.md).
+Paid work never buys a place in the project's roadmap or review queue: contributions are
+reviewed by the same gates whoever sends them.
+
 ---
 
 MIT-licensed. Built in the open and maintained by
-[Adam Matthew Steinberger](https://vibewithadam.matthewsteinberger.com/).
+[Adam Matthew Steinberger](https://vibewithadam.matthewsteinberger.com/)
+([résumé](https://github.com/adammatthewsteinberger/resume#readme) ·
+[contract work](https://github.com/adammatthewsteinberger/resume/blob/develop/SERVICES.md)).
