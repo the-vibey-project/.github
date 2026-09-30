@@ -23,18 +23,25 @@ on:
   # its own pull request (ADR-0036).
   merge_group:
 
-# Deliberately minimal, and deliberately WITHOUT a forge credential. `check --ci` also
-# surveys cloud clutter through `gh pr list` and `gh release list`, and it is tempting to
-# add `pull-requests: read` and a `GH_TOKEN` here so that survey can run. Do not: the job
-# below installs the tooling from the CHECKED-OUT TREE when a repository self-hosts, so on
-# a pull request the credentialed step would be running the contributor's own code. A
-# token in this job is a token handed to whatever that pull request contains. The survey
-# reporting "not surveyed" here is the correct outcome, not a bug to fix with a secret --
-# it belongs in a job whose checkout is trusted.
+# Deliberately minimal. `check --ci` also surveys cloud clutter through `gh pr list` and
+# `gh release list`, and it is tempting to add `pull-requests: read` and a `GH_TOKEN` here
+# so that survey can run. Do not: the job below installs the tooling from the CHECKED-OUT
+# TREE when a repository self-hosts, so on a pull request the credentialed step would be
+# running the contributor's own code. The survey reporting "not surveyed" here is the
+# correct outcome, not a bug to fix with a secret -- it belongs in a job whose checkout is
+# trusted. The pinned checkout action is the only component allowed to use the read-only
+# token, and `persist-credentials: false` removes it before any checkout-sourced tooling
+# runs. No pull-request-controlled shell step receives a forge credential.
 permissions:
   contents: read
 
 concurrency:
+  # 12.g-whole-state: on `push` and `merge_group` there is no pull-request payload, so the
+  # step below runs `vibey-gh check --ci` with NO `--commits` range -- the whole repository.
+  # A cancelled run is therefore subsumed by the next one rather than leaving a window
+  # nobody walked, which is what makes cancelling these safe here and unsafe in ci.yml. On a
+  # pull request the group is per-request, so it only ever cancels its own older run, and
+  # that run covered a base..head range the newer one also covers.
   group: provenance-${{ github.ref }}
   cancel-in-progress: true
 
@@ -45,8 +52,14 @@ jobs:
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          # Needed to walk the commits a pull request adds.
+          # Never inspect the synthetic merge ref: provenance must walk the contributor's
+          # exact head against the exact base supplied by the event.
+          repository: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name || github.repository }}
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
+          # The next steps execute tooling from this checkout. Do not leave the runner's
+          # GITHUB_TOKEN in .git/config where that code can read it.
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
@@ -73,7 +86,7 @@ jobs:
             echo "this repository provides the tooling — installing from source"
             python -m pip install --quiet -e "$self"
           else
-            python -m pip install --quiet "vibey==1.4.0"
+            python -m pip install --quiet "vibey-engine==3.1.0"
           fi
 
       # --ci skips the core.hooksPath assertion, which is per-clone local git config that
@@ -117,8 +130,6 @@ jobs:
             echo "Promotion PR: checking repository provenance without rewriting or re-auditing admitted history."
             vibey-gh check --ci
           elif [ -n "${BASE_SHA:-}" ]; then
-            git fetch --quiet --depth=50 origin "${BASE_SHA}" 2>/dev/null || true
-            git fetch --quiet --depth=50 origin "${HEAD_SHA}" 2>/dev/null || true
             vibey-gh check --ci --commits "${BASE_SHA}..${HEAD_SHA}"
           else
             vibey-gh check --ci
