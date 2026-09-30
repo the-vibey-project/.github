@@ -5,7 +5,12 @@ body:
   - type: markdown
     attributes:
       value: |
-        These projects record their hard calls as architecture decision records.
+        Thank you for the idea. If it is still taking shape,
+        [Ideas](https://github.com/the-vibey-project/vibey/discussions/categories/ideas)
+        is a good place to think it through first.
+
+        These projects record their hard calls as
+        [architecture decision records](https://github.com/the-vibey-project/vibey/tree/develop/docs/architecture/decisions).
         If your proposal contradicts one, say which — that is a better
         conversation than a rejected pull request, and it is the fastest way to
         get the decision revisited rather than re-argued.

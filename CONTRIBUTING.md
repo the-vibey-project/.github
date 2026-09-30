@@ -1,75 +1,99 @@
 # Contributing
 
-The organisation-wide default for
-[the-vibey-project](https://github.com/the-vibey-project). A repository that
-ships its own — most do — overrides this; read that one for its gates, its
-layout, and how to run it. What follows is what holds everywhere.
+Thank you for being here. This is the organisation-wide default for
+[the-vibey-project](https://github.com/the-vibey-project). A repository that ships its
+own guide overrides this one, and [`vibey`](https://github.com/the-vibey-project/vibey)
+does: read [its CONTRIBUTING.md](https://github.com/the-vibey-project/vibey/blob/develop/CONTRIBUTING.md)
+for its setup, gates and layout. What follows holds everywhere.
 
-## Before you start
+## Your first contribution
 
-**Check the repository is live.** Several are archived: their code now lives
-inside [`vibey`](https://github.com/the-vibey-project/vibey) and is developed
-there. An archived repository cannot take a pull request. If the code you want
-to change is under `src/vibey_runners/` or `src/vibey_tools/` in `vibey`, that
-is where to change it.
+The shortest path from "I'd like to help" to a merged pull request:
 
-**Open an issue first for anything non-trivial.** Not bureaucracy — these
-projects have strong opinions recorded as architecture decision records, and a
-change that contradicts one needs the ADR revisited rather than the code
-reviewed. Ten minutes in an issue saves a rejected branch.
+1. **Ask.** Post in [Q&A](https://github.com/the-vibey-project/vibey/discussions/categories/q-a)
+   or on [Discord](https://discord.gg/Qvu8aYnVS). "Where should I start?" is a welcome
+   question, and so is "is this worth doing?".
+2. **Pick something small.** Issues labelled
+   [good first issue](https://github.com/the-vibey-project/vibey/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+   or [help wanted](https://github.com/the-vibey-project/vibey/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
+   are scoped for a first pull request. A confusing sentence in the docs is a bug too,
+   and fixing one is a fine first change.
+3. **Branch from `develop`**, make the change, and commit with a
+   [Conventional Commits](https://www.conventionalcommits.org/) subject such as
+   `docs: explain the budget cap in the quickstart`.
+4. **Run the gates, then open a pull request against `develop`.** Say what changed and
+   why. Review will help with the rest.
+
+For anything bigger than a small fix, open an issue first. These projects record their
+hard calls as architecture decision records, and a change that contradicts one needs
+the record revisited rather than the code reviewed. Ten minutes in an issue saves a
+rejected branch.
+
+**Almost everything lives in one repository.** The engine runners and tools that once
+had repositories of their own are now inside
+[`vibey`](https://github.com/the-vibey-project/vibey), under `src/vibey_runners/` and
+`src/vibey_tools/`, and are developed there.
 
 ## The rules that hold in every repository
 
-**Conventional Commits, enforced.** `feat:`, `fix:`, `chore:`, `docs:`,
-`refactor:`, `test:`, `perf:`, `ci:`, `build:` — with an optional scope and `!`
-for a breaking change. A hook rejects anything else locally and CI rejects it
-again server-side. Versions are *derived* from what changed, so the subject line
-is load-bearing, not decoration.
+**Conventional Commits, enforced.** `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`,
+`test:`, `perf:`, `ci:`, `build:`, with an optional scope and `!` for a breaking change.
+A hook checks the subject locally and CI checks it again server-side. Versions are
+*derived* from what changed, so the subject line is load-bearing, not decoration.
 
-**Every commit is attributable.** Each carries a `Made-With` trailer and, where
-the file type allows a comment, each source file carries a provenance header.
-Both halves exist because a rule that only covers files cannot express itself in
-JSON or in generated Markdown. Install the tooling and it is automatic:
+**Every commit is attributable.** Each commit carries a `Made-With` trailer and, where
+the file type allows a comment, each source file carries a provenance header. Both
+halves exist because a rule that covers only files cannot express itself in JSON or in
+generated Markdown. Install the tooling once and the trailer is automatic:
 
 ```bash
-pip install vibey
-vibey-gh install     # the hooks and the managed workflows
-vibey-gh check       # what CI will say, before you push
+pip install vibey-engine   # carries the vibey-gh command
+vibey-gh install           # installs the hooks and the managed workflows
+vibey-gh check             # says what CI will say, before you push
 ```
 
-**Never commit to `main`.** Work branches off `develop`, pull requests squash
-into `develop`, and `develop` is promoted to `main` as a release. The one
-exception is a history-preserving `git subtree` import, which is merged rather
-than squashed because a squash discards the parent that makes the history
-preserved.
+A repository's managed workflows name the release they pin. Install that one, so
+`check` compares like with like.
 
-**Managed files are generated.** Anything with `Installed by vibey-gh` or
-`Generated by vibey-gh` at the top is rendered from a template. Editing it
-locally is reverted by the next `vibey-gh install` and reported as drift by CI.
-Change the template in
+**Never commit to `main`.** Work branches off `develop`, pull requests squash into
+`develop`, and `develop` is promoted to `main` as a release. The one exception is a
+history-preserving `git subtree` import, which is merged rather than squashed because
+a squash discards the parent that makes the history preserved.
+
+**Never route around a gate.** No `--no-verify`, no admin merge, nothing whose purpose
+is to make a check stop applying. If you think a gate is wrong, say so in the pull
+request: a failing check you disagree with is a conversation, not an obstacle.
+
+**Managed files are generated.** Anything headed `Installed by vibey-gh` or
+`Generated by vibey-gh` is rendered from a template. Editing it locally is reverted by
+the next `vibey-gh install` and reported as drift by CI. Change the template in
 [`vibey/src/vibey_tools/gh`](https://github.com/the-vibey-project/vibey/tree/develop/src/vibey_tools/gh)
 instead.
 
-**The gates are the review.** Every repository states its own in its README or
-`CONTRIBUTING.md`; run them before you push rather than discovering them in CI.
-Where a repository declares a coverage floor, it is a floor and not a target —
-a patch that lowers it does not merge.
+**The gates are the review.** Every repository states its own gates in its README or
+`CONTRIBUTING.md`; run them before you push rather than discovering them in CI. Where a
+repository declares a coverage floor, it is a floor and not a target: a patch that
+lowers it does not merge.
 
 ## Pull requests
 
-Say what changed and why. If it fixes a bug, say how the bug was reachable; if
-it changes behaviour, say what now happens instead. Link the issue.
+Say what changed and why. If it fixes a bug, say how the bug was reachable; if it
+changes behaviour, say what happens now instead. Link the issue.
 
-Keep one concern per pull request. A refactor bundled with a fix makes both
-harder to review and impossible to revert independently.
+Keep one concern per pull request. A refactor bundled with a fix makes both harder to
+review and impossible to revert independently.
 
-If a change touches guidance that the agent surfaces mirror — `.claude/`,
-`.agents/`, `.cursor/`, `.agent/` — update all of them in the same pull request.
-They are copies of one thing, and a copy that drifts is worse than no copy.
+If a change touches guidance that the agent surfaces mirror (`.claude/`, `.agents/`,
+`.cursor/`, `.agent/`), update all of them in the same pull request. They are copies of
+one thing, and a copy that drifts is worse than no copy.
+
+Working with a coding agent is welcome. Point it at the repository's `AGENTS.md`, and
+review what it produces as closely as your own work: the pull request is yours.
 
 ## Questions
 
-[SUPPORT.md](SUPPORT.md) routes them. Security issues go to
-[SECURITY.md](SECURITY.md), privately, never as a public issue.
+[SUPPORT.md](SUPPORT.md) routes them. Security issues go to [SECURITY.md](SECURITY.md),
+privately, never as a public issue.
 
-By contributing you agree to the [Code of Conduct](CODE_OF_CONDUCT.md).
+By contributing you agree to the [Code of Conduct](CODE_OF_CONDUCT.md), and to license
+your contribution under the repository's license (MIT unless it says otherwise).
