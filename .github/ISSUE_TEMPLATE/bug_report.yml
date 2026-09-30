@@ -5,20 +5,19 @@ body:
   - type: markdown
     attributes:
       value: |
-        The fields below are required because a report without them is usually
-        unreproducible, and an unreproducible report is a conversation rather
-        than a fix.
+        Thank you for reporting this. The fields below are what it takes to
+        reproduce a problem on the first try, which is the fastest route to a fix.
 
-        These are **macOS and Linux** projects. Usage questions belong in
-        [Discussions](https://github.com/the-vibey-project/vibey/discussions).
-        Please search existing issues first.
+        These are **macOS and Linux** projects. Not sure it is a bug? Ask in
+        [Q&A](https://github.com/the-vibey-project/vibey/discussions/categories/q-a)
+        first; that is never a wasted question. Please search existing issues too.
 
   - type: input
     id: package
     attributes:
       label: Package and version
-      description: The distribution and the exact version — `pip show <name>` or `<command> --version`.
-      placeholder: "vibey-gh 1.73.0"
+      description: The package and its exact version — `pip show vibey-engine`, or `<command> --version`.
+      placeholder: "vibey-engine 3.1.0"
     validations:
       required: true
 
