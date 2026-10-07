@@ -62,6 +62,12 @@ into a contributor within an hour. That decision is recorded as vibey ADR-0076
   top of `CONTRIBUTING.md` is noise in the one place it would actually be read,
   and the trailer is the half of the rule that covers such files.
 - **Work lands on `develop`** and is promoted to `main`. Never commit to `main`.
+  Pull requests squash into `develop`; the promotion pull request is a **rebase**
+  merge, which rewrites the commits, so `develop` and `main` differ by SHA afterwards
+  even though their contents match. Run `vibey-gh realign` to converge them. It refuses
+  unless the two trees are identical, so it cannot discard work, and the next promotion
+  is blocked until it has run. This repository does not install the promotion workflows,
+  so neither step happens by itself.
 - **`.github/workflows/*` are generated.** They are rendered by the `vibey-gh`
   command shipped in the `vibey-engine` package, from templates in
   [`vibey`](https://github.com/the-vibey-project/vibey) under

@@ -38,7 +38,8 @@ from [`vibey`](https://github.com/the-vibey-project/vibey/tree/develop/src/vibey
   `commit-msg` hook adds the trailer; `conventional-commits.yml` and `provenance.yml`
   enforce both server-side.
 - Work lands on `develop` and is promoted to `main`. Nothing is committed to `main`
-  directly.
+  directly. Promotion is a rebase merge (`vibey-gh promote`), so run `vibey-gh realign`
+  afterwards to put `develop` back on `main`'s history.
 
 After cloning:
 

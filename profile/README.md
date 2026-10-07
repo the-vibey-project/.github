@@ -83,8 +83,9 @@ database DSN and other services' secrets never reach it.
 ## Try it
 
 You need macOS or Linux, Python 3.12+ and PostgreSQL 14+ (vibey can install PostgreSQL
-for you). The local model is a 13.79 GB download, and 24 GB of memory is the measured
-floor for running it ([system requirements](https://github.com/the-vibey-project/vibey/blob/develop/docs/reference/system-requirements.md)).
+for you). The local model is a 13.79 GB download. 24 GB of memory is the minimum for
+running it, and the 24 GB machine it was measured on swapped during design, so more is
+better; a 16 GB Mac cannot run it ([system requirements](https://github.com/the-vibey-project/vibey/blob/develop/docs/reference/system-requirements.md)).
 
 ```bash
 ollama pull gpt-oss:20b                  # the local model, served by Ollama
@@ -159,7 +160,7 @@ The source is one monorepo.
 | Component | Source | What it does |
 | --- | --- | --- |
 | Conductor | [`src/vibey`](https://github.com/the-vibey-project/vibey/tree/develop/src/vibey) | The six-phase machine, queue, ledger, CLI and TUI |
-| Engine runners | [`src/vibey_runners`](https://github.com/the-vibey-project/vibey/tree/develop/src/vibey_runners) | `claudeloop` (Claude Code), `codexloop` (OpenAI Codex), `cursorloop` (Cursor Agent), `agyloop` (Google Antigravity), and the local runner as `gptossloop` and `qwenloop` |
+| Engine runners | [`src/vibey_runners`](https://github.com/the-vibey-project/vibey/tree/develop/src/vibey_runners) | `claudeloop` (Claude Code), `codexloop` (OpenAI Codex), and the local runner as `gptossloop` (GPT-OSS 20B, the default) and `qwenloop` (Qwen, opt-in) |
 | `vibey-gh` | [`src/vibey_tools/gh`](https://github.com/the-vibey-project/vibey/tree/develop/src/vibey_tools/gh) | Provenance, exact-head review, merge train, promotion and release |
 | `vibey-skills` | [`src/vibey_tools/skills`](https://github.com/the-vibey-project/vibey/tree/develop/src/vibey_tools/skills) | A deterministic Claude Code plugin marketplace of evidence-grounded skills |
 | `vibey-bootstrap` | [`src/vibey_tools/bootstrap`](https://github.com/the-vibey-project/vibey/tree/develop/src/vibey_tools/bootstrap) | Optional Azure, telemetry, configuration and messaging foundations |
@@ -181,8 +182,19 @@ rather than assumed.
 
 ### Which coding agents does it work with?
 
-Claude Code, OpenAI Codex, Cursor Agent and Google Antigravity, each through its own
-runner, plus local models on Ollama: GPT-OSS 20B by default, and Qwen as an opt-in.
+Claude Code and OpenAI Codex, each through its own runner, plus local models on Ollama:
+GPT-OSS 20B by default, and Qwen as an opt-in. Runners for Cursor Agent and Google
+Antigravity existed earlier and were retired, with the reasoning in
+[ADR-0078](https://github.com/the-vibey-project/vibey/blob/develop/docs/architecture/decisions/0078-retire-cursorloop-and-agyloop.md).
+
+### Can a team run it?
+
+Yes. Several workers can claim jobs at once against one PostgreSQL ledger, and a
+Kubernetes operator runs projects as a `VibeyProject` resource with Helm and KEDA
+autoscaling. The
+[Kubernetes guide](https://github.com/the-vibey-project/vibey/blob/develop/docs/guides/kubernetes.md)
+and [ADR-0025](https://github.com/the-vibey-project/vibey/blob/develop/docs/architecture/decisions/0025-kubernetes-operator-crd-keda.md)
+cover it.
 
 ### What does it cost?
 
