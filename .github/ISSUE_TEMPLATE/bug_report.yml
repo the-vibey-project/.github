@@ -17,7 +17,7 @@ body:
     attributes:
       label: Package and version
       description: The package and its exact version — `pip show vibey-engine`, or `<command> --version`.
-      placeholder: "vibey-engine 3.1.0"
+      placeholder: "vibey-engine 4.2.0"
     validations:
       required: true
 

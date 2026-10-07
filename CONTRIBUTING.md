@@ -56,9 +56,12 @@ A repository's managed workflows name the release they pin. Install that one, so
 `check` compares like with like.
 
 **Never commit to `main`.** Work branches off `develop`, pull requests squash into
-`develop`, and `develop` is promoted to `main` as a release. The one exception is a
-history-preserving `git subtree` import, which is merged rather than squashed because
-a squash discards the parent that makes the history preserved.
+`develop`, and `develop` is promoted to `main` as a release. The promotion is a
+**rebase** merge (`vibey-gh promote`), which keeps `main` linear but rewrites the
+commits, so afterwards `vibey-gh realign` moves `develop` onto `main`. It is safe to run
+because it acts only when the two branches have identical contents. The one exception to
+squashing is a history-preserving `git subtree` import, which is merged rather than
+squashed because a squash discards the parent that makes the history preserved.
 
 **Never route around a gate.** No `--no-verify`, no admin merge, nothing whose purpose
 is to make a check stop applying. If you think a gate is wrong, say so in the pull
