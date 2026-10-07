@@ -46,7 +46,7 @@ upgrade to take a fix.
 ## What is not
 
 - Vulnerabilities in the third-party engines and model servers themselves (Claude
-  Code, Codex, Cursor Agent, Antigravity, Ollama and the models it serves). Report
+  Code, Codex, Ollama and the models it serves). Report
   those to their vendors.
 - Anything that requires an attacker to already have write access to the repository
   or to the machine. These tools execute code from the working tree by design; a
