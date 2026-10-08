@@ -80,6 +80,31 @@ database DSN and other services' secrets never reach it.
 · [the release workflow](https://github.com/the-vibey-project/vibey/blob/develop/.github/workflows/vibey-engine.yml)
 · [paper: what an engine may see](https://the-vibey-project.github.io/vibey/main/paper/#what-an-engine-may-see)
 
+## Who is Vibey for?
+
+Six kinds of reader, in this order, set down as
+[sub-doctrine 2.c](https://github.com/the-vibey-project/vibey/blob/develop/docs/architecture/decisions/0087-the-six-audiences-in-order.md).
+A later audience adds to what an earlier one has and never displaces it.
+
+1. **Open-source developers**, who might use Vibey and then build it. Start at
+   [Start contributing](#start-contributing).
+2. **Non-profits** and other small mission-driven teams. They can
+   [cap what agents spend](https://github.com/the-vibey-project/vibey/blob/develop/docs/guides/outcomes/cap-agent-spending.md)
+   and [run them on their own hardware](https://github.com/the-vibey-project/vibey/blob/develop/docs/guides/outcomes/run-agents-on-your-own-hardware.md).
+   The [non-profit demo](https://github.com/the-vibey-project/vibey/blob/develop/docs/guides/demos/non-profit.md)
+   walks it through, and says where it stops.
+3. **Universities and academia**, who can study and cite the design: the
+   [paper](https://the-vibey-project.github.io/vibey/main/paper/) and
+   [how to cite it](#how-do-i-cite-vibey).
+4. **Governments, with their militaries**, who can
+   [keep a record that cannot be quietly rewritten](https://github.com/the-vibey-project/vibey/blob/develop/docs/guides/outcomes/keep-a-tamper-evident-record.md)
+   and check [what an assessor will ask](https://github.com/the-vibey-project/vibey/blob/develop/docs/guides/outcomes/take-vibey-into-a-regulated-environment.md).
+   It is not a certification.
+5. **Freelance clients**, and 6. **industry**: see
+   [who maintains Vibey](#who-maintains-vibey-and-can-i-hire-the-maintainer).
+
+Each audience is meant to have its own demo. Only the non-profit one is written so far.
+
 ## Try it
 
 You need macOS or Linux, Python 3.12+ and PostgreSQL 14+ (vibey can install PostgreSQL
